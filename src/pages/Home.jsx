@@ -39,6 +39,7 @@ function Home() {
     try {
       setError(null);
       setEmptyFields([]);
+      values.load = values.load || 0;
       const { data, request } = await axios.post(
         'http://localhost:4000/api/workouts',
         values,

@@ -1,8 +1,9 @@
 import { Form, Formik, Field } from 'formik';
 import styled from 'styled-components';
+import WorkoutSchema from '../validation/workoutValidation';
+import { Error } from '../styles/Error';
 import CustomField from './CustomField';
 import { Button } from '../styles/Button.styled';
-import WorkoutSchema from '../validation/workoutValidation';
 
 const StyledForm = styled(Form)`
   .radio-group {
@@ -24,13 +25,19 @@ const StyledForm = styled(Form)`
   }
 `;
 
-const BaseForm = ({ initialValues, title, buttonText, handleSubmit }) => {
+const BaseForm = ({
+  initialValues,
+  title,
+  buttonText,
+  handleSubmit,
+  error,
+  emptyFields,
+}) => {
   return (
     <Formik
       onSubmit={handleSubmit}
       initialValues={initialValues}
-      // validationSchema={WorkoutSchema}
-    >
+      validationSchema={WorkoutSchema}>
       {formik => (
         <StyledForm>
           <h3>{title}</h3>
@@ -39,7 +46,9 @@ const BaseForm = ({ initialValues, title, buttonText, handleSubmit }) => {
             type='text'
             id='title'
             name='title'
-            label='Title: '
+            label='Title'
+            required={true}
+            emptyFields={emptyFields}
           />
           <div
             className='radio-group'
@@ -56,28 +65,34 @@ const BaseForm = ({ initialValues, title, buttonText, handleSubmit }) => {
             </label>
           </div>
           <CustomField
-            label='Load:'
+            label='Load'
             type='number'
             placeholder='Load'
             id='load'
             name='load'
+            emptyFields={emptyFields}
           />
 
           <CustomField
-            label='Series: '
+            label='Series'
             type='number'
             id='series'
             name='series'
             placeholder='Series'
+            required={true}
+            emptyFields={emptyFields}
           />
 
           <CustomField
-            label='Reps:'
+            label='Reps'
             type='number'
             id='reps'
             name='reps'
             placeholder='Reps'
+            required={true}
+            emptyFields={emptyFields}
           />
+          {error && <Error>{error}</Error>}
           <Button type='submit'>{buttonText}</Button>
         </StyledForm>
       )}

@@ -1,7 +1,9 @@
+import axios from 'axios';
 import styled from 'styled-components';
+import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
 
 const Wrapper = styled.div`
-  background: #fff;
+  background: var(--light-color);
   border-radius: 4px;
   margin: 20px auto;
   padding: 20px;
@@ -21,7 +23,7 @@ const Wrapper = styled.div`
   p {
     margin: 0;
     font-size: 0.9em;
-    color: #555;
+    color: var(--dark-gray-color);
   }
 
   .icons-container {
@@ -36,26 +38,50 @@ const Wrapper = styled.div`
 
   span {
     cursor: pointer;
-    background: #f1f1f1;
+    background: var(--light-gray-color);
     padding: 6px;
     border-radius: 50%;
-    color: #333;
+    color: var(--dark-color);
     transition: all 0.2s ease-in;
     transition-property: background, color;
   }
 
   span.delete:hover {
     background: var(--error);
-    color: #f1f1f1;
+    color: var(--light-gray-color);
   }
 
   span.edit:hover {
     background: var(--primary-color);
-    color: #f1f1f1;
+    color: var(--light-gray-color);
   }
 `;
 
 function WorkoutDetails({ workout }) {
+  const { dipstach } = useWorkoutsContext();
+
+  const handleDeleteWorkout = async () => {
+    const choice = confirm('Are you sure to delete this item?');
+
+    if (choice) {
+      try {
+        const { data, request } = await axios.delete(
+          `http://localhost:4000/api/workouts/${workout._id}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        if (request.status === 200) {
+          dipstach({ type: 'DELETE_WORKOUT', payload: workout._id });
+        }
+      } catch (error) {
+        console.log(error.response.data);
+      }
+    }
+  };
+
   return (
     <Wrapper>
       <h4>{workout.title}</h4>
@@ -71,7 +97,11 @@ function WorkoutDetails({ workout }) {
       <p>{workout.createdAt}</p>
       <div className='icons-container'>
         <span className='material-symbols-outlined edit'>edit</span>
-        <span className='material-symbols-outlined delete'>delete</span>
+        <span
+          onClick={handleDeleteWorkout}
+          className='material-symbols-outlined delete'>
+          delete
+        </span>
       </div>
     </Wrapper>
   );

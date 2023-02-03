@@ -13,26 +13,35 @@ const Wrapper = styled.div`
   }
 
   input.error {
-    border: 1px solid var(--error);
+    border: 2px solid var(--error);
   }
 
   label {
     font-size: 0.9rem;
   }
+
+  span {
+    color: var(--error);
+  }
 `;
 
-const CustomField = ({ label, required, ...props }) => {
+const CustomField = ({ label, emptyFields, required, ...props }) => {
   const [field, meta] = useField(props.name);
 
   return (
     <Wrapper>
       <label>
         {label}
+        <span>{field.name !== 'load' ? '*' : null}</span>
         <input
           {...field}
           {...props}
-          required={`${required} ? true : false`}
-          className={meta.touched && meta.error ? 'error' : ''}
+          required={required ? true : false}
+          className={
+            (meta.touched && meta.error) || emptyFields.includes(field.name)
+              ? 'error'
+              : ''
+          }
         />
       </label>
       {meta.error && meta.touched && <Error>{meta.error}</Error>}

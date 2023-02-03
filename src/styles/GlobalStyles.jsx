@@ -6,7 +6,10 @@ const GlobalStyles = createGlobalStyle`
         --primary-color-darker: #545cf2;
         --error: #e7195a;
         --success: #1aac83;
-        --light-color: #eee;
+        --light-color: #f3f3f3;
+        --light-gray-color: #e7e7e7;
+        --dark-gray-color: #555;
+        --dark-color: #333;
     }
 
     *,
@@ -18,7 +21,7 @@ const GlobalStyles = createGlobalStyle`
     body {
         font-family: 'Poppins', sans-serif;
         margin: 0;
-        background: #f1f1f1;
+        background: var(--light-gray-color);
         padding: 0;
     }
 `;

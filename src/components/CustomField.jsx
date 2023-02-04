@@ -8,7 +8,7 @@ const Wrapper = styled.div`
     margin-top: 10px;
     margin-bottom: 20px;
     width: 100%;
-    border: 1px solid #ddd;
+    border: 1px solid var(--medium-gray-color);
     border-radius: 4px;
   }
 
@@ -20,8 +20,9 @@ const Wrapper = styled.div`
     font-size: 0.9rem;
   }
 
-  span {
-    color: var(--error);
+  .optional-field {
+    font-size: 0.7rem;
+    color: var(--dark-gray-color);
   }
 `;
 
@@ -31,8 +32,9 @@ const CustomField = ({ label, emptyFields, required, ...props }) => {
   return (
     <Wrapper>
       <label>
-        {label}
-        <span>{field.name !== 'load' ? '*' : null}</span>
+        {label}{' '}
+        <span className='optional-field'>{!required ? '- optional' : ''} </span>
+        <span className='required-field'>{}</span>
         <input
           {...field}
           {...props}

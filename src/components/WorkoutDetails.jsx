@@ -1,14 +1,15 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
 
 const Wrapper = styled.div`
   background: var(--light-color);
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   margin: 20px auto;
   padding: 20px;
   position: relative;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--box-shadow);
 
   strong {
     margin-right: 4px;
@@ -58,7 +59,11 @@ const Wrapper = styled.div`
 `;
 
 function WorkoutDetails({ workout }) {
-  const { dipstach } = useWorkoutsContext();
+  const { dispatch } = useWorkoutsContext();
+  const navigate = useNavigate();
+  const handleEditWorkout = () => {
+    navigate(`/${workout._id}/edit`);
+  };
 
   const handleDeleteWorkout = async () => {
     const choice = confirm('Are you sure to delete this item?');
@@ -74,7 +79,7 @@ function WorkoutDetails({ workout }) {
           }
         );
         if (request.status === 200) {
-          dipstach({ type: 'DELETE_WORKOUT', payload: workout._id });
+          dispatch({ type: 'DELETE_WORKOUT', payload: data._id });
         }
       } catch (error) {
         console.log(error.response.data);
@@ -96,7 +101,11 @@ function WorkoutDetails({ workout }) {
       </p>
       <p>{workout.createdAt}</p>
       <div className='icons-container'>
-        <span className='material-symbols-outlined edit'>edit</span>
+        <span
+          onClick={handleEditWorkout}
+          className='material-symbols-outlined edit'>
+          edit
+        </span>
         <span
           onClick={handleDeleteWorkout}
           className='material-symbols-outlined delete'>

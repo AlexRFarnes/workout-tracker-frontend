@@ -6,7 +6,6 @@ import BaseForm from '../components/BaseForm';
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
 
 function Home() {
-  // const [workouts, setWorkouts] = useState(null);
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
   const initialValues = {

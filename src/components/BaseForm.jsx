@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import WorkoutSchema from '../validation/workoutValidation';
 import { Error } from '../styles/Error';
 import CustomField from './CustomField';
-import { Button } from '../styles/Button.styled';
+import { PrimaryButton, SecondaryButton } from '../styles/Button.styled';
+import { useNavigate } from 'react-router-dom';
 
 const StyledForm = styled(Form)`
   .radio-group {
@@ -32,7 +33,10 @@ const BaseForm = ({
   handleSubmit,
   error,
   emptyFields,
+  ...props
 }) => {
+  const navigate = useNavigate();
+
   return (
     <Formik
       onSubmit={handleSubmit}
@@ -93,7 +97,20 @@ const BaseForm = ({
             emptyFields={emptyFields}
           />
           {error && <Error>{error}</Error>}
-          <Button type='submit'>{buttonText}</Button>
+          {props.backButton && (
+            <SecondaryButton
+              style={{ marginRight: '10px' }}
+              onClick={() => {
+                navigate(-1, { replace: true });
+              }}>
+              Back
+            </SecondaryButton>
+          )}
+          <PrimaryButton
+            disabled={formik.isSubmitting || !(formik.dirty && formik.isValid)}
+            type='submit'>
+            {buttonText}
+          </PrimaryButton>
         </StyledForm>
       )}
     </Formik>

@@ -8,9 +8,8 @@ const WorkoutSchema = Yup.object().shape({
   loadUnits: Yup.string()
     .oneOf(['kg', 'lbs'], 'Please select between kg and lbs')
     .required('Load units are required'),
-  load: Yup.number()
-    .min(0, 'Minimum for load is 0')
-    .required('Load is required'),
+  load: Yup.number().min(0, 'Minimum for load is 0'),
+  // .required('Load is required'),
   series: Yup.number()
     .min(1, 'Minimum for series is 1')
     .required('Series are required'),

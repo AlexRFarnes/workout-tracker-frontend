@@ -96,21 +96,22 @@ const BaseForm = ({
             required={true}
             emptyFields={emptyFields}
           />
-          {error && <Error>{error}</Error>}
           {props.backButton && (
             <SecondaryButton
               style={{ marginRight: '10px' }}
               onClick={() => {
-                navigate(-1, { replace: true });
+                navigate(-1);
               }}>
               Back
             </SecondaryButton>
           )}
           <PrimaryButton
-            disabled={formik.isSubmitting || !(formik.dirty && formik.isValid)}
+            // Disable button when form is submitting or if values have not been modified or are not valid
+            disabled={formik.isSubmitting || !(formik.dirty && formik.isValid)} // dirty = Returns true if values are not deeply equal from initial values, alse otherwise.
             type='submit'>
             {buttonText}
           </PrimaryButton>
+          {error && <Error>{error}</Error>}
         </StyledForm>
       )}
     </Formik>

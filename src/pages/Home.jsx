@@ -36,8 +36,6 @@ function Home() {
 
   const handleSubmit = async (values, { resetForm }) => {
     try {
-      setError(null);
-      setEmptyFields([]);
       values.load = values.load || 0;
       const { data, request } = await axios.post(
         'http://localhost:4000/api/workouts',
@@ -49,8 +47,11 @@ function Home() {
         }
       );
       if (request.status === 200) {
-        dispatch({ type: 'CREATE_WORKOUT', payload: data });
+        setError(null);
+        setEmptyFields([]);
         resetForm();
+        console.log('New workout added', data);
+        dispatch({ type: 'CREATE_WORKOUT', payload: data });
       }
     } catch (error) {
       console.log(error.response.data);

@@ -22,9 +22,7 @@ function App() {
 
   return (
     <RouterProvider router={router}>
-      <div className='App'>
-        <h1>Hello world!</h1>
-      </div>
+      <div className='App' />
     </RouterProvider>
   );
 }

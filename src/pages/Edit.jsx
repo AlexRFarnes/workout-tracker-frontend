@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import BaseForm from '../components/BaseForm';
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
-import { Button, SecondaryButton } from '../styles/Button.styled';
 
 const Wrapper = styled.div`
   max-width: 400px;
@@ -28,8 +27,6 @@ function Edit() {
 
   const handleSubmit = async values => {
     try {
-      setError(null);
-      setEmptyFields([]);
       const { data, request } = await axios.patch(
         `http://localhost:4000/api/workouts/${id}`,
         values,
@@ -42,6 +39,8 @@ function Edit() {
 
       if (request.status === 200) {
         dispatch({ type: 'UPDATE_WORKOUT', payload: { id, workout: values } });
+        setError(null);
+        setEmptyFields([]);
         navigate('/');
       }
     } catch (error) {

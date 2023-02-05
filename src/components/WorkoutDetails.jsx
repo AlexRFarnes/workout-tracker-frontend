@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { formatDistanceToNow } from 'date-fns';
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
 
 const Wrapper = styled.div`
@@ -61,6 +62,7 @@ const Wrapper = styled.div`
 function WorkoutDetails({ workout }) {
   const { dispatch } = useWorkoutsContext();
   const navigate = useNavigate();
+
   const handleEditWorkout = () => {
     navigate(`/${workout._id}/edit`);
   };
@@ -83,6 +85,7 @@ function WorkoutDetails({ workout }) {
         }
       } catch (error) {
         console.log(error.response.data);
+        navigate('/404', { replace: true });
       }
     }
   };
@@ -99,7 +102,9 @@ function WorkoutDetails({ workout }) {
       <p>
         <strong>Reps:</strong> {workout.reps}
       </p>
-      <p>{workout.createdAt}</p>
+      <p>
+        {formatDistanceToNow(new Date(workout.createdAt), { addSuffix: true })}
+      </p>
       <div className='icons-container'>
         <span
           onClick={handleEditWorkout}

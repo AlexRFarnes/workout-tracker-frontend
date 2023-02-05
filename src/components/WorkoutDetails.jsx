@@ -79,7 +79,7 @@ function WorkoutDetails({ workout }) {
           }
         );
         if (request.status === 200) {
-          dispatch({ type: 'DELETE_WORKOUT', payload: data._id });
+          dispatch({ type: 'DELETE_WORKOUT', payload: data });
         }
       } catch (error) {
         console.log(error.response.data);

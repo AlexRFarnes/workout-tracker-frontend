@@ -2,17 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import WorkoutsContextProvider from './context/WorkoutsContext';
-import UserContextProvider from './context/UserContext';
+import AuthContextProvider from './context/AuthContext';
 import GlobalStyles from './styles/GlobalStyles';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <UserContextProvider>
+    <AuthContextProvider>
       <WorkoutsContextProvider>
         <GlobalStyles />
         <App />
       </WorkoutsContextProvider>
-    </UserContextProvider>
+    </AuthContextProvider>
   </React.StrictMode>
 );

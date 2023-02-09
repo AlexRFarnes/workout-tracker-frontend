@@ -15,3 +15,13 @@ export const NavigationContainer = styled(Container)`
   align-items: center;
   justify-content: space-between;
 `;
+
+export const FormContainer = styled.div`
+  max-width: 400px;
+  width: 90%;
+  margin: 40px auto 20px;
+  background: var(--light-color);
+  border-radius: var(--border-radius);
+  padding: 20px 30px 30px;
+  box-shadow: var(--box-shadow);
+`;

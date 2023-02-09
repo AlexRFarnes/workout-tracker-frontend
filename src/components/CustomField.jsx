@@ -40,7 +40,7 @@ const CustomField = ({ label, emptyFields, required, ...props }) => {
           {...props}
           required={required ? true : false}
           className={
-            (meta.touched && meta.error) || emptyFields.includes(field.name)
+            (meta.touched && meta.error) || emptyFields?.includes(field.name)
               ? 'error'
               : ''
           }

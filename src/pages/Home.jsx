@@ -1,9 +1,37 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { GridLayout } from '../layouts/GridLayout';
+import styled from 'styled-components';
 import WorkoutDetails from '../components/WorkoutDetails';
 import BaseForm from '../components/BaseForm';
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
+
+const Wrapper = styled.div`
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 100px;
+
+  @media (max-width: 960px) {
+    grid-template-columns: 1.5fr 1fr;
+  }
+
+  @media (max-width: 750px) {
+    grid-template-columns: 1.25fr 1fr;
+  }
+
+  @media (max-width: 680px) {
+    display: block;
+
+    .formWrapper {
+      max-width: 400px;
+      width: 90%;
+      margin: 20px auto;
+      background: var(--light-color);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--box-shadow);
+    }
+  }
+`;
 
 function Home() {
   const [error, setError] = useState(null);
@@ -32,7 +60,7 @@ function Home() {
       }
     }
     fetchWorkouts();
-  }, []);
+  }, [dispatch]);
 
   const handleSubmit = async (values, { resetForm }) => {
     try {
@@ -61,20 +89,22 @@ function Home() {
   };
 
   return (
-    <GridLayout>
+    <Wrapper>
       <div>
         {workouts &&
           workouts.map(wk => <WorkoutDetails key={wk._id} workout={wk} />)}
       </div>
-      <BaseForm
-        initialValues={initialValues}
-        handleSubmit={handleSubmit}
-        buttonText='Add workout'
-        title='Add a new workout'
-        emptyFields={emptyFields}
-        error={error}
-      />
-    </GridLayout>
+      <div className='formWrapper'>
+        <BaseForm
+          initialValues={initialValues}
+          handleSubmit={handleSubmit}
+          buttonText='Add workout'
+          title='Add a new workout'
+          emptyFields={emptyFields}
+          error={error}
+        />
+      </div>
+    </Wrapper>
   );
 }
 

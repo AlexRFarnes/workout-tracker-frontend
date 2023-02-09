@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../api';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { formatDistanceToNow } from 'date-fns';
@@ -72,19 +72,15 @@ function WorkoutDetails({ workout }) {
 
     if (choice) {
       try {
-        const { data, request } = await axios.delete(
-          `http://localhost:4000/api/workouts/${workout._id}`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-        if (request.status === 200) {
-          dispatch({ type: 'DELETE_WORKOUT', payload: data });
-        }
-      } catch (error) {
-        console.log(error.response.data);
+        const { data } = await api.delete(`/workouts/${workout._id}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        dispatch({ type: 'DELETE_WORKOUT', payload: data });
+      } catch (err) {
+        console.log(err?.response.data);
         navigate('/404', { replace: true });
       }
     }

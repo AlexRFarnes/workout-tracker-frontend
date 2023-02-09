@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../api';
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FormContainer } from '../styles/Container.styled';
@@ -17,26 +17,21 @@ function Edit() {
 
   const handleSubmit = async values => {
     try {
-      const { data, request } = await axios.patch(
-        `http://localhost:4000/api/workouts/${id}`,
-        values,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      const { data } = await api.patch(`/workouts/${id}`, values, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-      if (request.status === 200) {
-        dispatch({ type: 'UPDATE_WORKOUT', payload: { id, workout: values } });
-        setError(null);
-        setEmptyFields([]);
-        navigate('/');
-      }
-    } catch (error) {
-      console.log(error.response.data);
-      setError(error.response.data.error);
-      setEmptyFields(error.response.data.emptyFields);
+      setEmptyFields([]);
+      setError(null);
+
+      dispatch({ type: 'UPDATE_WORKOUT', payload: { id, workout: values } });
+      navigate('/');
+    } catch (err) {
+      console.log(err?.response.data);
+      setError(err?.response.data.error);
+      setEmptyFields(err?.response.data.emptyFields);
     }
   };
 

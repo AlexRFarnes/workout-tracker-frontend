@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../api';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import WorkoutDetails from '../components/WorkoutDetails';
@@ -49,14 +49,11 @@ function Home() {
   useEffect(() => {
     async function fetchWorkouts() {
       try {
-        const { data, request } = await axios.get(
-          'http://localhost:4000/api/workouts'
-        );
-        if (request.status === 200) {
-          dispatch({ type: 'SET_WORKOUTS', payload: data });
-        }
-      } catch (error) {
-        console.log(error.response.data);
+        const { data } = await api.get('/workouts');
+
+        dispatch({ type: 'SET_WORKOUTS', payload: data });
+      } catch (err) {
+        console.log(err?.response.data);
       }
     }
     fetchWorkouts();
@@ -65,26 +62,22 @@ function Home() {
   const handleSubmit = async (values, { resetForm }) => {
     try {
       values.load = values.load || 0;
-      const { data, request } = await axios.post(
-        'http://localhost:4000/api/workouts',
-        values,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      if (request.status === 200) {
-        setError(null);
-        setEmptyFields([]);
-        resetForm();
-        console.log('New workout added', data);
-        dispatch({ type: 'CREATE_WORKOUT', payload: data });
-      }
-    } catch (error) {
-      console.log(error.response.data);
-      setError(error.response.data.error);
-      setEmptyFields(error.response.data.emptyFields);
+      const { data } = await api.post('/workouts', values, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      setError(null);
+      setEmptyFields([]);
+      resetForm();
+
+      console.log('New workout added', data);
+      dispatch({ type: 'CREATE_WORKOUT', payload: data });
+    } catch (err) {
+      console.log(err?.response.data);
+      setError(err?.response.data.error);
+      setEmptyFields(err?.response.data.emptyFields);
     }
   };
 

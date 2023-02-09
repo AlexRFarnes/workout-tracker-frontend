@@ -1,12 +1,14 @@
-import { useState } from 'react';
 import AuthenticateForm from '../components/AuthenticateForm';
+import { useSignup } from '../hooks/useSignup';
 import { FormContainer } from '../styles/Container.styled';
 
 function Signup() {
-  const [error, setError] = useState(null);
+  const { error, signup } = useSignup();
 
-  const handleSubmit = values => {
-    console.log(values);
+  const handleSubmit = async ({ email, password }) => {
+    const username = '@' + email.split('@')[0];
+    console.log({ email, username, password });
+    signup({ email, username, password });
   };
 
   return (

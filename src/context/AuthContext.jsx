@@ -14,9 +14,12 @@ const authReducer = (state, action) => {
 };
 
 const AuthContextProvider = ({ children }) => {
-  const [state, disptach] = useReducer(authReducer, { user: null });
+  const [state, dispatch] = useReducer(authReducer, { user: null });
+
+  console.log('AuthContext state: ', state);
+
   return (
-    <AuthContext.Provider value={{ ...state, disptach }}>
+    <AuthContext.Provider value={{ ...state, dispatch }}>
       {children}
     </AuthContext.Provider>
   );

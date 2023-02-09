@@ -1,19 +1,9 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import { FormContainer } from '../styles/Container.styled';
 import BaseForm from '../components/BaseForm';
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
-
-const Wrapper = styled.div`
-  max-width: 400px;
-  width: 90%;
-  margin: 20px auto;
-  background: var(--light-color);
-  border-radius: var(--border-radius);
-  padding: 20px;
-  box-shadow: var(--box-shadow);
-`;
 
 function Edit() {
   const [error, setError] = useState(null);
@@ -51,7 +41,7 @@ function Edit() {
   };
 
   return (
-    <Wrapper>
+    <FormContainer>
       <BaseForm
         initialValues={initialValues}
         handleSubmit={handleSubmit}
@@ -61,7 +51,7 @@ function Edit() {
         error={error}
         backButton={true}
       />
-    </Wrapper>
+    </FormContainer>
   );
 }
 

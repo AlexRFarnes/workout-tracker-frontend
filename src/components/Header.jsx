@@ -1,6 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { useLogout } from '../hooks/useLogout';
+import { SecondaryButton } from '../styles/Button.styled';
 import { NavigationContainer } from '../styles/Container.styled';
 
 const Wrapper = styled.header`
@@ -12,13 +14,49 @@ const Wrapper = styled.header`
   }
 `;
 
+const Navigation = styled.nav`
+  display: flex;
+  align-items: center;
+
+  a {
+    margin-left: 10px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease-in;
+    transition-property: opacity, border-color;
+  }
+
+  a.active {
+    border-bottom: 2px solid var(--light-color);
+  }
+
+  a:hover {
+    opacity: 0.8;
+  }
+`;
+
 function Header() {
+  const { logout } = useLogout();
   return (
     <Wrapper>
       <NavigationContainer>
         <Link to='/'>
           <h1>Workout Tracker</h1>
         </Link>
+        <Navigation>
+          <NavLink
+            className={({ isActive }) => (isActive ? 'active' : '')}
+            to='/login'>
+            Login
+          </NavLink>
+          <NavLink
+            className={({ isActive }) => (isActive ? 'active' : '')}
+            to='/signup'>
+            Signup
+          </NavLink>
+          <SecondaryButton style={{ fontSize: '1rem' }} onClick={logout}>
+            Logout
+          </SecondaryButton>
+        </Navigation>
       </NavigationContainer>
     </Wrapper>
   );

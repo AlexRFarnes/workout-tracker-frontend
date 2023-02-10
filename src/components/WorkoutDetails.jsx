@@ -80,8 +80,12 @@ function WorkoutDetails({ workout }) {
 
         dispatch({ type: 'DELETE_WORKOUT', payload: data });
       } catch (err) {
-        console.log(err?.response.data);
-        navigate('/404', { replace: true });
+        if (err.response) {
+          console.log(err.response.data);
+          navigate('/404', { replace: true });
+        } else {
+          console.log(err);
+        }
       }
     }
   };

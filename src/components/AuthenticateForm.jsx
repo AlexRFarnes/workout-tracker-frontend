@@ -37,12 +37,12 @@ function AuthenticateForm({
               label='Password'
               required={true}
             />
-            {error && <Error style={{ marginTop: '10px' }}>{error}</Error>}
             <PrimaryButton
               disabled={formik.isSubmitting || !formik.isValid}
               type='submit'>
               {buttonText}
             </PrimaryButton>
+            {error && <Error style={{ marginTop: '10px' }}>{error}</Error>}
           </Form>
         )}
       </Formik>

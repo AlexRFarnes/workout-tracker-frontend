@@ -3,12 +3,11 @@ import { useSignup } from '../hooks/useSignup';
 import { FormContainer } from '../styles/Container.styled';
 
 function Signup() {
-  const { error, signup } = useSignup();
+  const { signup, error } = useSignup();
 
   const handleSubmit = async ({ email, password }) => {
     const username = '@' + email.split('@')[0];
-    console.log({ email, username, password });
-    signup({ email, username, password });
+    await signup({ email, username, password });
   };
 
   return (

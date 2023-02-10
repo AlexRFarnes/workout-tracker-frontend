@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { formatDistanceToNow } from 'date-fns';
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
+import { useState } from 'react';
 
 const Wrapper = styled.div`
   background: var(--light-color);
@@ -33,12 +34,12 @@ const Wrapper = styled.div`
     top: 20px;
     right: 20px;
 
-    span:last-child {
+    button:last-child {
       margin-left: 0.5rem;
     }
   }
 
-  span {
+  button {
     cursor: pointer;
     background: var(--light-gray-color);
     padding: 6px;
@@ -46,20 +47,30 @@ const Wrapper = styled.div`
     color: var(--dark-color);
     transition: all 0.2s ease-in;
     transition-property: background, color;
+    border: none;
   }
 
-  span.delete:hover {
+  .delete:hover {
     background: var(--error);
     color: var(--light-gray-color);
   }
 
-  span.edit:hover {
+  .edit:hover {
     background: var(--primary-color);
     color: var(--light-gray-color);
+  }
+
+  button:disabled,
+  .edit:disabled:hover,
+  .delete:disabled:hover {
+    background: var(--dark-gray-color);
+    color: var(--light-gray-color);
+    cursor: not-allowed;
   }
 `;
 
 function WorkoutDetails({ workout }) {
+  const [isLoading, setIsLoading] = useState(false);
   const { dispatch } = useWorkoutsContext();
   const navigate = useNavigate();
 
@@ -72,6 +83,7 @@ function WorkoutDetails({ workout }) {
 
     if (choice) {
       try {
+        setIsLoading(true);
         const { data } = await api.delete(`/workouts/${workout._id}`, {
           headers: {
             'Content-Type': 'application/json',
@@ -79,6 +91,7 @@ function WorkoutDetails({ workout }) {
         });
 
         dispatch({ type: 'DELETE_WORKOUT', payload: data });
+        setIsLoading(false);
       } catch (err) {
         if (err.response) {
           console.log(err.response.data);
@@ -106,16 +119,18 @@ function WorkoutDetails({ workout }) {
         {formatDistanceToNow(new Date(workout.createdAt), { addSuffix: true })}
       </p>
       <div className='icons-container'>
-        <span
+        <button
           onClick={handleEditWorkout}
-          className='material-symbols-outlined edit'>
+          className='material-symbols-outlined edit'
+          disabled={isLoading}>
           edit
-        </span>
-        <span
+        </button>
+        <button
           onClick={handleDeleteWorkout}
-          className='material-symbols-outlined delete'>
+          className='material-symbols-outlined delete'
+          disabled={isLoading}>
           delete
-        </span>
+        </button>
       </div>
     </Wrapper>
   );

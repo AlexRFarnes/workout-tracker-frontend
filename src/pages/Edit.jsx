@@ -1,6 +1,6 @@
 import api from '../api';
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Navigate } from 'react-router-dom';
 import { FormContainer } from '../styles/Container.styled';
 import BaseForm from '../components/BaseForm';
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
@@ -13,7 +13,7 @@ function Edit() {
 
   const navigate = useNavigate();
 
-  let initialValues = workouts.filter(wk => wk._id === id)[0];
+  let initialValues = workouts?.filter(wk => wk._id === id)[0] || null;
 
   const handleSubmit = async values => {
     try {
@@ -29,13 +29,16 @@ function Edit() {
       dispatch({ type: 'UPDATE_WORKOUT', payload: { id, workout: values } });
       navigate('/');
     } catch (err) {
-      console.log(err?.response.data);
-      setError(err?.response.data.error);
-      setEmptyFields(err?.response.data.emptyFields);
+      if (err.response) {
+        setError(err.response.data.error);
+        setEmptyFields(err.response.data.emptyFields);
+      } else {
+        console.log(err);
+      }
     }
   };
 
-  return (
+  return initialValues ? (
     <FormContainer>
       <BaseForm
         initialValues={initialValues}
@@ -47,6 +50,8 @@ function Edit() {
         backButton={true}
       />
     </FormContainer>
+  ) : (
+    <Navigate to='/404' replace />
   );
 }
 

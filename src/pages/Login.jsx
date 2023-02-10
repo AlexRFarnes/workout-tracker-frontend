@@ -1,12 +1,12 @@
-import { useState } from 'react';
 import AuthenticateForm from '../components/AuthenticateForm';
+import { useLogin } from '../hooks/useLogin';
 import { FormContainer } from '../styles/Container.styled';
 
 function Login() {
-  const [error, setError] = useState(null);
+  const { login, error } = useLogin();
 
-  const handleSubmit = values => {
-    console.log(values);
+  const handleSubmit = async values => {
+    await login(values);
   };
 
   return (

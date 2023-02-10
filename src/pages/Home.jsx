@@ -53,7 +53,9 @@ function Home() {
 
         dispatch({ type: 'SET_WORKOUTS', payload: data });
       } catch (err) {
-        console.log(err?.response.data);
+        if (err.response) {
+          console.log(err.response.data);
+        }
       }
     }
     fetchWorkouts();
@@ -72,12 +74,14 @@ function Home() {
       setEmptyFields([]);
       resetForm();
 
-      console.log('New workout added', data);
       dispatch({ type: 'CREATE_WORKOUT', payload: data });
     } catch (err) {
-      console.log(err?.response.data);
-      setError(err?.response.data.error);
-      setEmptyFields(err?.response.data.emptyFields);
+      if (err.response) {
+        setError(err.response.data.error);
+        setEmptyFields(err.response.data.emptyFields);
+      } else {
+        console.log(err);
+      }
     }
   };
 

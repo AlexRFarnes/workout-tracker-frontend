@@ -9,7 +9,6 @@ export const useSignup = () => {
 
   const signup = async values => {
     try {
-      setIsLoading(true);
       setError(null);
 
       const { data } = await api.post('/user/signup', values, {
@@ -19,13 +18,16 @@ export const useSignup = () => {
       });
 
       dispatch({ type: 'LOGIN', payload: data });
+
       localStorage.setItem('WORKOUTS_TRACKER_user', JSON.stringify(data));
     } catch (err) {
-      setError(err?.response.data.error);
-    } finally {
-      setIsLoading(false);
+      if (err.response) {
+        setError(err.response.data.error);
+      } else {
+        console.log(err);
+      }
     }
   };
 
-  return { error, signup };
+  return { signup, error };
 };

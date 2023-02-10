@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
 import { SecondaryButton } from '../styles/Button.styled';
 import { NavigationContainer } from '../styles/Container.styled';
@@ -36,6 +37,7 @@ const Navigation = styled.nav`
 
 function Header() {
   const { logout } = useLogout();
+  const { user } = useAuthContext();
   return (
     <Wrapper>
       <NavigationContainer>
@@ -43,19 +45,25 @@ function Header() {
           <h1>Workout Tracker</h1>
         </Link>
         <Navigation>
-          <NavLink
-            className={({ isActive }) => (isActive ? 'active' : '')}
-            to='/login'>
-            Login
-          </NavLink>
-          <NavLink
-            className={({ isActive }) => (isActive ? 'active' : '')}
-            to='/signup'>
-            Signup
-          </NavLink>
-          <SecondaryButton style={{ fontSize: '1rem' }} onClick={logout}>
-            Logout
-          </SecondaryButton>
+          {!user && (
+            <>
+              <NavLink
+                className={({ isActive }) => (isActive ? 'active' : '')}
+                to='/login'>
+                Login
+              </NavLink>
+              <NavLink
+                className={({ isActive }) => (isActive ? 'active' : '')}
+                to='/signup'>
+                Signup
+              </NavLink>
+            </>
+          )}
+          {user && (
+            <SecondaryButton style={{ fontSize: '1rem' }} onClick={logout}>
+              Logout
+            </SecondaryButton>
+          )}
         </Navigation>
       </NavigationContainer>
     </Wrapper>

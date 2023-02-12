@@ -38,6 +38,7 @@ const Navigation = styled.nav`
 function Header() {
   const { logout } = useLogout();
   const { user } = useAuthContext();
+
   return (
     <Wrapper>
       <NavigationContainer>
@@ -60,9 +61,14 @@ function Header() {
             </>
           )}
           {user && (
-            <SecondaryButton style={{ fontSize: '1rem' }} onClick={logout}>
-              Logout
-            </SecondaryButton>
+            <>
+              <span>{user.username}</span>
+              <SecondaryButton
+                style={{ fontSize: '1rem', marginLeft: '10px' }}
+                onClick={logout}>
+                Logout
+              </SecondaryButton>
+            </>
           )}
         </Navigation>
       </NavigationContainer>

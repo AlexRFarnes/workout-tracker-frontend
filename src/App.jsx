@@ -25,8 +25,7 @@ function App() {
         />
         <Route
           path='/:id/edit'
-          element={<Edit />}
-          // element={user ? <Edit /> : <Navigate replace to='/login' />}
+          element={user ? <Edit /> : <Navigate replace to='/login' />}
         />
         <Route
           path='/login'

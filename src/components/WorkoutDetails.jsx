@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { formatDistanceToNow } from 'date-fns';
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
 import { useState } from 'react';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const Wrapper = styled.div`
   background: var(--light-color);
@@ -72,13 +73,22 @@ const Wrapper = styled.div`
 function WorkoutDetails({ workout }) {
   const [isLoading, setIsLoading] = useState(false);
   const { dispatch } = useWorkoutsContext();
+  const { user } = useAuthContext();
   const navigate = useNavigate();
 
   const handleEditWorkout = () => {
+    if (!user) {
+      return;
+    }
+
     navigate(`/${workout._id}/edit`);
   };
 
   const handleDeleteWorkout = async () => {
+    if (!user) {
+      return;
+    }
+
     const choice = confirm('Are you sure to delete this item?');
 
     if (choice) {
@@ -87,6 +97,7 @@ function WorkoutDetails({ workout }) {
         const { data } = await api.delete(`/workouts/${workout._id}`, {
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.token}`,
           },
         });
 

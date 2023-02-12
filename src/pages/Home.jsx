@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import WorkoutDetails from '../components/WorkoutDetails';
 import BaseForm from '../components/BaseForm';
+import { useAuthContext } from '../hooks/useAuthContext';
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
 
 const Wrapper = styled.div`
@@ -35,7 +36,9 @@ const Wrapper = styled.div`
 
 function Home() {
   const [error, setError] = useState(null);
+  const [errorFetching, setErrorFetching] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
+  const { user } = useAuthContext();
   const initialValues = {
     title: '',
     loadUnits: 'kg',
@@ -49,11 +52,16 @@ function Home() {
   useEffect(() => {
     async function fetchWorkouts() {
       try {
-        const { data } = await api.get('/workouts');
+        const { data } = await api.get('/workouts', {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
 
         dispatch({ type: 'SET_WORKOUTS', payload: data });
       } catch (err) {
         if (err.response) {
+          setErrorFetching(err.response.data.error);
           console.log(err.response.data);
         }
       }
@@ -62,11 +70,17 @@ function Home() {
   }, [dispatch]);
 
   const handleSubmit = async (values, { resetForm }) => {
+    if (!user) {
+      setError('You must be logged in.');
+      return;
+    }
+
     try {
       values.load = values.load || 0;
       const { data } = await api.post('/workouts', values, {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`,
         },
       });
 
@@ -87,10 +101,25 @@ function Home() {
 
   return (
     <Wrapper>
-      <div>
-        {workouts &&
-          workouts.map(wk => <WorkoutDetails key={wk._id} workout={wk} />)}
-      </div>
+      {errorFetching ? (
+        <div
+          style={{
+            display: 'grid',
+            placeContent: 'center',
+            textAlign: 'center',
+            fontSize: '1.5rem',
+          }}>
+          <h2>Ooops!</h2>
+          <p>Something seems to have gone wrong!</p>
+          <p>Please, try again later.</p>
+        </div>
+      ) : (
+        <div>
+          {workouts &&
+            workouts.map(wk => <WorkoutDetails key={wk._id} workout={wk} />)}
+        </div>
+      )}
+
       <div className='formWrapper'>
         <BaseForm
           initialValues={initialValues}

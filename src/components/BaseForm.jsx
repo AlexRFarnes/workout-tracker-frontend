@@ -111,7 +111,7 @@ const BaseForm = ({
             type='submit'>
             {buttonText}
           </PrimaryButton>
-          {error && <Error>{error}</Error>}
+          {error && <Error style={{ marginTop: '10px' }}>{error}</Error>}
         </StyledForm>
       )}
     </Formik>

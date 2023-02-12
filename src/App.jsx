@@ -12,17 +12,9 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Page404 from './pages/Page404';
 import { useAuthContext } from './hooks/useAuthContext';
-import { useEffect } from 'react';
 
 function App() {
-  const { user, dispatch } = useAuthContext();
-
-  useEffect(() => {
-    const data = localStorage.getItem('WORKOUTS_TRACKER_user') || null;
-    if (data) {
-      dispatch({ type: 'LOGIN', payload: data });
-    }
-  }, []);
+  const { user } = useAuthContext();
 
   const router = createBrowserRouter(
     createRoutesFromElements(

@@ -12,9 +12,12 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Page404 from './pages/Page404';
 import { useAuthContext } from './hooks/useAuthContext';
+import GlobalStyles from './styles/GlobalStyles';
+import { useThemeContext } from './hooks/useThemeContext';
 
 function App() {
   const { user } = useAuthContext();
+  const { theme } = useThemeContext();
 
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -41,9 +44,12 @@ function App() {
   );
 
   return (
-    <RouterProvider router={router}>
-      <div className='App' />
-    </RouterProvider>
+    <>
+      <GlobalStyles theme={theme} />
+      <RouterProvider router={router}>
+        <div className='App' />
+      </RouterProvider>
+    </>
   );
 }
 

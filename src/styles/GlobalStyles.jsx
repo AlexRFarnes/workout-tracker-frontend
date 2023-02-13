@@ -26,8 +26,18 @@ const GlobalStyles = createGlobalStyle`
     body {
         font-family: 'Poppins', sans-serif;
         margin: 0;
-        background: var(--light-gray-color);
         padding: 0;
+        color: ${({ theme }) =>
+          theme === 'light' ? 'var(--dark-color)' : 'var(--light-color)'};
+        background: ${({ theme }) =>
+          theme === 'light' ? 'var(--light-gray-color)' : 'var(--dark-color)'};;
+    }
+
+    input {
+        color: ${({ theme }) =>
+          theme === 'light' ? 'var(--dark-gray-color)' : 'var(--light-color)'};
+        background: ${({ theme }) =>
+          theme === 'light' ? 'var(--light-color)' : 'var(--dark-gray-color)'};;
     }
 `;
 export default GlobalStyles;
